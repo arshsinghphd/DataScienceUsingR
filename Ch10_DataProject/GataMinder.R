@@ -124,7 +124,7 @@ p7 <- gapminder %>%
   # animation
   labs(title = 'Year: {closest_state}', x = 'Dollars_Per_Day', y = 'Density') +
   transition_states(year,transition_length = 1, state_length = 1, wrap = TRUE)
-animate(p7,renderer=gifski_renderer(loop=FALSE))
+animate(p7,renderer=gifski_renderer())
 anim_save('DollarPerDay_West_Developing.gif')
 
 
