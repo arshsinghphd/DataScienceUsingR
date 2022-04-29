@@ -18,8 +18,7 @@ dat <- us_contagious_diseases %>%
   mutate(rate=count/population * 10000 * 52/weeks_reporting) 
 
 
-# HeatMap -----------------------------------------------------------------
-
+#HeatMap
 
 dat %>%  ggplot(aes(year,state,fill=rate)) +
   geom_tile() + 
@@ -37,8 +36,7 @@ dat %>%  ggplot(aes(year,state,fill=rate)) +
   ggtitle(the_disease)
 
 
-# Line Map ----------------------------------------------------------------
-
+# Line Map
 
 avg <- us_contagious_diseases %>% 
   filter(disease == the_disease & 
@@ -60,3 +58,37 @@ dat %>% ggplot() +
             color="grey50")+
   xlab('Rate') + ylab('Year') + 
   ggtitle(paste("US-wide Rate of Incidences of",the_disease))
+
+
+# Q3 ----------------------------------------------------------------------
+# For the state of California, make a time series plot showing rates for all 
+# diseases. Include only years with 10 or more weeks reporting. Use a 
+# different color for each disease.
+levels(us_contagious_diseases$state)
+
+the_state="California"
+cal <- us_contagious_diseases %>%
+  group_by(year) %>%
+  filter(state==the_state, weeks_reporting>10) %>%
+  mutate(rate=count/population *10^4)
+
+cal %>% ggplot(aes(year,rate,color=disease)) +
+  geom_line(size=1) + 
+  xlab('Year') +
+  ylab('Incidence Rate per 10,000 persons') +
+  ggtitle(the_state)
+
+
+# Q4 ----------------------------------------------------------------------
+# Now do the same for the rates for the US.
+the_state='USA'
+us <- us_contagious_diseases %>%
+  filter(weeks_reporting>10) %>%
+  group_by(disease,year) %>%
+  mutate(rate=sum(count,na.rm=TRUE)/sum(population,na.rm=TRUE) *10^4)
+
+us %>% ggplot(aes(year,rate,color=disease)) +
+  geom_line(size=1) +
+  xlab('Year') +
+  ylab('Incidence Rate per 10,000 persons') +
+  ggtitle(the_state)
