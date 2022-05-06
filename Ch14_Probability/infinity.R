@@ -7,7 +7,7 @@ same_birthday <- function(n){
   any(duplicated(bdays))
 }
 
-B <- 10^seq(0.5, 4, len = 30)
+B <- 10^seq(0.5, 6, len = 50)
 
 compute_prob <- function(B,n=25){
   results <- replicate(B, same_birthday(n))
@@ -15,5 +15,5 @@ compute_prob <- function(B,n=25){
 }
 
 prob <- sapply(B, compute_prob)
-qplot(B, prob, geom = "line")
+qplot(log10(B), prob, geom = "line")
 # expect = 0.569
