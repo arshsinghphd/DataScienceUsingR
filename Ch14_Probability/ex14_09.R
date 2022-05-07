@@ -19,15 +19,39 @@ mean(replicate(B,sample(box,1))=='c') # = ~.20185
 # Q2 ----------------------------------------------------------------------
 # What is the probability that the ball will not be cyan?
 #Calculation
-1 - 3/(3+5+7) # =.8
+1 - 3/(3+5+7) #= 0.8
 
 # Monte Carlo Experiment with B of 10^5
 box <- c(rep('c',3),rep('m',5),rep('y',7))
 B <- 10^5
-mean(replicate(B,sample(box,1))!='c') # = ~.8003
+mean(replicate(B,sample(box,1))!='c') # = ~0.8003
 
 
 # Q3 ----------------------------------------------------------------------
+# Instead of taking just one draw, consider taking two draws. You take the 
+# second draw without returning the first draw to the box. We call this 
+# sampling without replacement. What is the probability that the first draw 
+# is cyan and that the second draw is not cyan?
+#Calculate
+3/15*12/14 #= 0.1714
+
+S=replicate(B,sample(box,2,replace=FALSE))
+mean(S[1,]=='c' & S[2,]!='c') #= 0.1716
+
+
+# Q4 ----------------------------------------------------------------------
+# Now repeat the experiment, but this time, after taking the first draw and 
+# recording the color, return it to the box and shake the box. We call this
+# sampling with replacement. What is the probability that the first draw is 
+# cyan and that the second draw is not cyan?
+#Calculate
+3/15*12/15 #= 0.1600
+
+S=replicate(B,sample(box,2,replace=TRUE))
+mean(S[1,]=='c' & S[2,]!='c') #= 0.1596
+
+
+# Q5 ----------------------------------------------------------------------
 
 
 # Q10 ---------------------------------------------------------------------
@@ -36,6 +60,9 @@ mean(replicate(B,sample(box,1))!='c') # = ~.8003
 # The teams are equally good so they each have a 50-50 chance of winning each 
 # game. If the Cavs lose the first game, what is the probability that they win
 # the series?
+
+# Q4 ----------------------------------------------------------------------
+
 
 # Calculate Pr, they can win in these cases:
 # Cavs win 4 of the next 4 games (4 more, total 5 games)
