@@ -52,6 +52,24 @@ mean(S[1,]=='c' & S[2,]!='c') #= 0.1596
 
 
 # Q5 ----------------------------------------------------------------------
+# Two events A and B are independent if Pr(A and B)=Pr(A)P(B). 
+# Under which situation are the draws independent?
+# a. You don’t replace the draw.
+# b. You replace the draw.
+# c. Neither
+# d. Both
+# (answer=b)
+
+
+# Q6 ----------------------------------------------------------------------
+# Say you’ve drawn 5 balls from the box, with replacement, and all have been
+# yellow. What is the probability that the next one is yellow?
+
+7/15 #=.4667
+mean(replicate(B,sample(box,1))=='y') #=.4685
+
+
+# Q7 ----------------------------------------------------------------------
 
 
 # Q10 ---------------------------------------------------------------------
