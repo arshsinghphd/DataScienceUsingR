@@ -1,5 +1,6 @@
 library(dplyr)
 library(gtools)
+library(ggplot2)
 options(digits=4)
 
 # Q1 ----------------------------------------------------------------------
@@ -206,3 +207,42 @@ test <- sample==4
 mean(test)
 # ~ 0.3435
 
+
+# Q12 ---------------------------------------------------------------------
+# Two teams, A and B, are playing a seven game series. Team A is better than team B 
+# and has a p>0.5 chance of winning each game. Given a value p, the probability of 
+# winning the series for the underdog team B can be computed with the following 
+# function based on a Monte Carlo simulation:
+
+prob_win <- function(p=.5){
+  B <- 10^4
+  result <- replicate(B, {
+    b_win <- sample(c(1,0), 7, replace = TRUE, prob = c(1-p, p))
+    sum(b_win)>=4
+  })
+  mean(result)
+}
+
+# Use the function sapply to compute the probability, call it Pr, of winning for 
+p <- seq(0.5, 0.95, 0.025)
+# Then plot the result.
+Pr <- sapply(p,prob_win)
+qplot(p, Pr)
+
+
+# Q13 ---------------------------------------------------------------------
+#  Repeat the exercise above, but now keep the probability fixed at p <- 0.75 and 
+# compute the probability for different series lengths: best of 1 game, 3 games, 
+# 5 games, ... Specifically, N <- seq(1, 25, 2).
+
+prob_win <- function(N, p=0.75){
+  B <- 10^4
+  result <- replicate(B, {
+    b_win <- sample(c(1,0), N, replace = TRUE, prob = c(1-p, p))
+    sum(b_win)>=(N+1)/2
+  })
+  mean(result)
+}
+N <- seq(1, 25, 2)
+Pr <- sapply(N,prob_win)
+qplot(N, Pr)
