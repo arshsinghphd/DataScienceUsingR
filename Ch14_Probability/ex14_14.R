@@ -90,7 +90,7 @@ s=15
 max_iq <- function(){
   x <- seq(-3, 3, length = 10000) * s + m
   y <- pnorm(x,mean=m,sd=s)
-  max(x[y>.99])
+  x[y>.995]
 }
 
 iqs <- replicate(B, max_iq())
