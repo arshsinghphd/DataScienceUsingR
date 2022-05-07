@@ -116,17 +116,3 @@ cav_wins <- function(n=4){
 # Q11 ---------------------------------------------------------------------
 # Confirm the results of the previous question with a Monte Carlo 
 # simulation.
-B <- 10^5
-count=0
-sum_cwins=array()
-for (i in c(1:B)){
-  sum_cwins[i]=0
-  for (j in c(2:7)){
-    if (sum_cwins[i]<4){
-    sum_cwins[i]<-sum_cwins[i]+sample(c(0,1),1,prob=c(0.5,0.5))
-    } else {
-    break
-    }
-  }
-} 
-mean(sum_cwins==4)
