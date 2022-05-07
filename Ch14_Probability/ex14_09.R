@@ -51,6 +51,16 @@ S=replicate(B,sample(box,2,replace=TRUE))
 mean(S[1,]=='c' & S[2,]!='c') #= 0.1596
 
 
+# Q4 ----------------------------------------------------------------------
+
+# Calculate Pr, they can win in these cases:
+# Cavs win 4 of the next 4 games (4 more, total 5 games)
+# Cavs win 3 of the next 4 games + last game (5 more, total 6 games)
+# Cavs win 3 of the next 5 games + last game (6 more, total 7 games)
+(0.5^4)+(.5^5)+(.5^6)
+#.109375
+
+
 # Q5 ----------------------------------------------------------------------
 # Two events A and B are independent if Pr(A and B)=Pr(A)P(B). 
 # Under which situation are the draws independent?
@@ -70,6 +80,29 @@ mean(replicate(B,sample(box,1))=='y') #=.4685
 
 
 # Q7 ----------------------------------------------------------------------
+# If you roll a 6-sided die six times, what is the probability of not seeing
+# a 6?
+5/6 
+
+
+# Q8 ----------------------------------------------------------------------
+# Two teams, say the Celtics and the Cavs, are playing a seven game series. 
+# The Cavs are a better team and have a 60% chance of winning each game. 
+# What is the probability that the Celtics win at least one game?
+
+# Case: 1 - Cavs win first 4 game ending the series
+1 - .6^4 # = .8704
+
+
+# Q9 ----------------------------------------------------------------------
+# Create a Monte Carlo simulation to confirm your answer to the previous 
+# problem.
+cav_wins <- function(n=4){
+  sum(sample(c(1,0),n,prob=c(.6,.4),replace=TRUE))
+}
+
+1 - mean(replicate(B,cav_wins(4))==4)
+# .8699
 
 
 # Q10 ---------------------------------------------------------------------
@@ -78,16 +111,6 @@ mean(replicate(B,sample(box,1))=='y') #=.4685
 # The teams are equally good so they each have a 50-50 chance of winning each 
 # game. If the Cavs lose the first game, what is the probability that they win
 # the series?
-
-# Q4 ----------------------------------------------------------------------
-
-
-# Calculate Pr, they can win in these cases:
-# Cavs win 4 of the next 4 games (4 more, total 5 games)
-# Cavs win 3 of the next 4 games + last game (5 more, total 6 games)
-# Cavs win 3 of the next 5 games + last game (6 more, total 7 games)
-(0.5^4)+(.5^5)+(.5^6)
-#.109375
 
 
 # Q11 ---------------------------------------------------------------------
