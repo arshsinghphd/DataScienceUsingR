@@ -1,6 +1,6 @@
 library(dplyr)
 library(gtools)
-
+options(digits=4)
 
 # Q1 ----------------------------------------------------------------------
 # One ball will be drawn at random from a box containing: 3 cyan balls, 
@@ -17,6 +17,17 @@ mean(replicate(B,sample(box,1))=='c') # = ~.20185
 
 
 # Q2 ----------------------------------------------------------------------
+# What is the probability that the ball will not be cyan?
+#Calculation
+1 - 3/(3+5+7) # =.8
+
+# Monte Carlo Experiment with B of 10^5
+box <- c(rep('c',3),rep('m',5),rep('y',7))
+B <- 10^5
+mean(replicate(B,sample(box,1))!='c') # = ~.8003
+
+
+# Q3 ----------------------------------------------------------------------
 
 
 # Q10 ---------------------------------------------------------------------
