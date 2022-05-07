@@ -112,7 +112,93 @@ cav_wins <- function(n=4){
 # game. If the Cavs lose the first game, what is the probability that they win
 # the series?
 
+# Scenarios:
+# 4 games are played C=0, N=1
+# Cav's lose:
+# (0,0,0,0)
+
+# 5 games are played C=1, N=4
+# Cav's lose
+# (0,1,0,0,0)
+# (0,0,1,0,0)
+# (0,0,0,1,0)
+
+# Cav's win
+# (0,1,1,1,1)
+
+# total 6 games are played C=4, N=10
+# Cavs lose (6):
+# (0,0,0,1,1,0)
+# (0,0,1,0,1,0)
+# (0,0,1,1,0,0)
+
+# (0,1,0,0,1,0)
+# (0,1,0,1,0,0)
+# (0,1,1,0,0,0)
+
+
+# Cavs win (4):
+# (0,0,1,1,1,1)
+# (0,1,0,1,1,1)
+# (0,1,1,0,1,1)
+# (0,1,1,1,0,1)
+
+# total 7 games are played C=10, N=20
+# Cavs lose (10):
+# (0,0,0,1,1,1,0)
+
+# (0,0,1,0,1,1,0)
+# (0,0,1,1,0,1,0)
+# (0,0,1,1,1,0,0)
+
+# (0,1,0,0,1,1,0)
+# (0,1,0,1,0,1,0)
+# (0,1,0,1,1,0,0)
+
+# (0,1,1,0,0,1,0)
+# (0,1,1,0,1,0,0)
+# (0,1,1,1,0,0,0)
+
+# Cavs win (10):
+# (0,0,0,1,1,1,1)
+
+# (0,0,1,0,1,1,1)
+# (0,0,1,1,0,1,1)
+# (0,0,1,1,1,0,1)
+
+# (0,1,0,0,1,1,1)
+# (0,1,0,1,0,1,1)
+# (0,1,0,1,1,0,1)
+
+# (0,1,1,0,0,1,1)
+# (0,1,1,0,1,0,1)
+# (0,1,1,1,0,0,1)
+
+
+# Total ways = 35
+# Cavs win = 15
+
+15/35 #=0.4286
 
 # Q11 ---------------------------------------------------------------------
 # Confirm the results of the previous question with a Monte Carlo 
 # simulation.
+B <- 10^4
+cav_wins <- function(n=7){
+  sum_c_wins=0 #they lose first of the 7 games
+  sum_w_wins=1
+  for (i in c(2:7)){ # we will sample for games 2 - 6
+      c <- sample(c(0,1),1,prob=c(.5,.5))
+      sum_c_wins <- sum_c_wins+ (c==1)
+      sum_w_wins <- sum_w_wins+ (c==0)
+      # series ends if W or C wins
+      if (sum_w_wins==4 | sum_c_wins==4){ 
+      break
+      }
+  }
+  sum_c_wins
+}
+sample <- replicate(B,cav_wins(7))
+test <- sample==4
+mean(test)
+#=0.3439
