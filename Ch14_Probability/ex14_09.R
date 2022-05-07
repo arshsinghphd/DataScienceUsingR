@@ -113,21 +113,23 @@ cav_wins <- function(n=4){
 # the series?
 
 # Scenarios:
+
 # 4 games are played C=0, N=1
 # Cav's lose:
 # (0,0,0,0)
 
-# 5 games are played C=1, N=4
-# Cav's lose
-# (0,1,0,0,0)
-# (0,0,1,0,0)
-# (0,0,0,1,0)
 
-# Cav's win
+# 5 games are played C=1, N=4
+# Cav's lose      (3)
+# (0,0,0,1,0)
+# (0,0,1,0,0)
+# (0,1,0,0,0)
+# Cav's win       (1)
 # (0,1,1,1,1)
 
+
 # total 6 games are played C=4, N=10
-# Cavs lose (6):
+# Cavs lose       (6)
 # (0,0,0,1,1,0)
 # (0,0,1,0,1,0)
 # (0,0,1,1,0,0)
@@ -137,14 +139,14 @@ cav_wins <- function(n=4){
 # (0,1,1,0,0,0)
 
 
-# Cavs win (4):
+# Cavs win        (4)
 # (0,0,1,1,1,1)
 # (0,1,0,1,1,1)
 # (0,1,1,0,1,1)
 # (0,1,1,1,0,1)
 
 # total 7 games are played C=10, N=20
-# Cavs lose (10):
+# Cavs lose       (10)
 # (0,0,0,1,1,1,0)
 
 # (0,0,1,0,1,1,0)
@@ -159,7 +161,7 @@ cav_wins <- function(n=4){
 # (0,1,1,0,1,0,0)
 # (0,1,1,1,0,0,0)
 
-# Cavs win (10):
+# Cavs win        (10)
 # (0,0,0,1,1,1,1)
 
 # (0,0,1,0,1,1,1)
@@ -178,7 +180,8 @@ cav_wins <- function(n=4){
 # Total ways = 35
 # Cavs win = 15
 
-15/35 #=0.4286
+15/35 #= 0.4286
+# expected = ~0.3435
 
 # Q11 ---------------------------------------------------------------------
 # Confirm the results of the previous question with a Monte Carlo 
@@ -187,11 +190,11 @@ B <- 10^4
 cav_wins <- function(n=7){
   sum_c_wins=0 #they lose first of the 7 games
   sum_w_wins=1
-  for (i in c(2:7)){ # we will sample for games 2 - 6
-      c <- sample(c(0,1),1,prob=c(.5,.5))
-      sum_c_wins <- sum_c_wins+ (c==1)
-      sum_w_wins <- sum_w_wins+ (c==0)
-      # series ends if W or C wins
+  for (i in c(2:7)){ # we will sample for games 2 - 7
+      c_wins <- sample(c(0,1),1,prob=c(.5,.5))
+      sum_c_wins <- sum_c_wins+ (c_wins==1)
+      sum_w_wins <- sum_w_wins+ (c_wins==0)
+      # series ends if W or C wins, no more games need to be played
       if (sum_w_wins==4 | sum_c_wins==4){ 
       break
       }
@@ -201,4 +204,5 @@ cav_wins <- function(n=7){
 sample <- replicate(B,cav_wins(7))
 test <- sample==4
 mean(test)
-#=0.3439
+# ~ 0.3435
+
