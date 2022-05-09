@@ -1,5 +1,5 @@
 library(ggplot2)
-
+library(dplyr)
 # Q1 ----------------------------------------------------------------------
 # 1. Assume the distribution of female heights is approximated by a normal distribution
 # with a mean of 64 inches and a standard deviation of 3 inches. If we pick a female at 
@@ -71,27 +71,25 @@ pnorm(3,0,1)-pnorm(-3,0,1)
 
 # 7. Imagine the distribution of male adults is approximately normal with an expected 
 # value of 69 and a standard deviation of 3. How tall is the male in the 99th percentile
-x <- seq(-3, 3, length = 1000) * 3 + 69
-y <- pnorm(x,mean=69,sd=3)
-plot(x,y)
-min(x[y>=0.99])
-# 75.98
+qnorm(0.99, mean = 69, sd = 3)
 
-
+# Q8 ----------------------------------------------------------------------
 # 8. The distribution of IQ scores is approximately normally distributed. The average is 
 # 100 and the standard deviation is 15. Suppose you want to know the distribution of 
 # the highest IQ across all graduating classes if 10,000 people are born each in your 
 # school district. Run a Monte Carlo simulation with B=1000 generating 10,000 IQ scores 
 # and keeping the highest. Make a histogram.
-B=10^3
-m=100
-s=15
+B <- 10^3
+n <- 10^4
+narray <- array(1:n)
+m <- 100
+s <- 15
 
-max_iq <- function(){
-  x <- seq(-3, 3, length = 10000) * s + m
-  y <- pnorm(x,mean=m,sd=s)
-  x[y>.995]
+get_max_iq <- function(n,m,s){
+   maxiq <- max(rnorm(n, m, s))
+   maxiq
 }
 
-iqs <- replicate(B, max_iq())
-hist(iqs)
+maxiqs <- replicate(B, get_max_iq(n,m,s))
+
+qplot(maxiqs)
