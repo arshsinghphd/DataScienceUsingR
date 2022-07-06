@@ -1,0 +1,120 @@
+---
+title: "16_11"
+output: html_notebook
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r echo=TRUE}
+library(dplyr)
+library(dslabs)
+library(tidyverse)
+```
+
+1.  ::: {#Q1}
+    A famous athlete has an impressive career, winning 70% of her 500
+    career matches. However, this athlete gets criticized because in
+    important events, such as the Olympics, she has a losing record of 8
+    wins and 9 losses. Perform a Chi-square test to determine if this
+    losing record can be simply due to chance as opposed to not
+    performing well under pressure.
+    :::
+
+```{r echo=TRUE}
+two_by_two <- data.frame(won=c("win","lose"), 
+                         olympic=c(8,9), 
+                         other=c(350-8,150-9)) 
+
+chisq_test <- two_by_two %>% select(-won) %>% chisq.test() 
+
+chisq_test$p.value
+
+```
+
+The chance that the null hypothesis is true, that the difference between
+overall and Olympic performance is zero, is p: .0671%, low. Possible
+that the difference arises from performance under pressure.
+
+2.  ::: {#Q2}
+    Why did we use the Chi-square test instead of Fisher's exact test in
+    the previous exercise?
+    :::
+
+    A.  It actually does not matter, since they give the exact same
+        p-value.
+
+    B.  Fisher's exact and the Chi-square are different names for the
+        same test.
+
+    C.  Because the sum of the rows and columns of the two-by-two table
+        are not fixed so the hypergeometric distribution is not an
+        appropriate assumption for the null hypothesis. For this reason,
+        Fisher's exact test is rarely applicable with observational
+        data.
+
+    D.  Because the Chi-square test runs faster.
+
+    Answer: C
+
+3.  ::: {#Q3}
+    Compute the odds ratio of "losing under pressure" along with a
+    confidence interval.
+    :::
+
+Odds Ratio:
+
+```{r}
+odds_ratio=(9/8)/(141/342)
+odds_ratio
+
+```
+
+Confidence Interval:
+
+```{r}
+log_or <- log(odds_ratio)
+se <- two_by_two %>% select(-won) %>% summarize(se = sqrt(sum(sum(1/olympic)+sum(1/other)))) %>% pull(se)
+ci <- log_or + c(-1,1) * qnorm(0.975) * se
+exp(ci)
+
+```
+
+4.  ::: {Q4}
+    Notice that the p-value is larger than 0.05 but the 95% confidence
+    interval does not include 1. What explains this?
+    :::
+
+```{=html}
+<!-- -->
+```
+A.  We made a mistake in our code.
+B.  These are based on t-statistics so the connection between p-value
+    and confidence intervals does not apply.
+C.  Different approximations are used for the p-value and the confidence
+    interval calculation. If we had a larger sample size the match would
+    be better.
+D.  We should use the Fisher exact test to get confidence intervals.
+
+Answer(C)
+
+5.  ::: {#Q5}
+    Multiply the two-by-two table by 2 and see if the p-value and
+    confidence retrieval are a better match.
+    :::
+
+```{r}
+two_by_two <- data.frame(won=c("win","lose"), 
+                         olympic=c(2*8,2*9), 
+                         other=c(2*342,2*141))
+chisq_test <- two_by_two %>% select(-won) %>% chisq.test() 
+chisq_test$p.value
+
+```
+```{r}
+se <- two_by_two %>% select(-won) %>% summarize(se = sqrt(sum(sum(1/olympic)+sum(1/other)))) %>% pull(se)
+ci <- log_or + c(-1,1) * qnorm(0.975) * se
+exp(ci)
+
+```
+
